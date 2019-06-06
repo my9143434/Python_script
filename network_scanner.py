@@ -2,6 +2,18 @@
 
 
 import scapy.all as scapy
+import optparse
+
+
+def get_argument():
+    parser = optparse.OptionParser()
+    parser.add_option("-t", "--target", dest="target", help="Target IP address to scan")
+    (options, arguments) = parser.parse_args()
+    if not options.target:
+        parser.error("[-] Please specify a interface. Use --help for more information.")
+
+    # parser.parse_args() is tuple
+    return options
 
 
 # create ether net frame and append arp request later on
@@ -45,6 +57,6 @@ def print_result(client_list):
     # broadcast mac will always be 6 ff
     # broadcast_arp_request.show()
 
-
-result_scan = scan("10.0.2.1/24")
+options = get_argument()
+result_scan = scan(options.target)
 print_result(result_scan)
