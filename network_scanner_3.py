@@ -18,15 +18,13 @@ def get_argument():
 
 # create ether net frame and append arp request later on
 def scan(ip):
-    # scapy.arping(ip)
-
     arp_request = scapy.ARP(pdst=ip)    # create arp packet object (class)
     broadcast_request = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")    # create ether net frame
     broadcast_arp_request = broadcast_request / arp_request
     answered = scapy.srp(broadcast_arp_request, timeout=1, verbose=0)[0]  # srp for custom packet
 
-
     client_list = []
+    # element(request, answer)
     for element in answered:
         client_dict = {"ip":element[1].psrc, "mac":element[1].hwsrc}
         client_list.append(client_dict)
