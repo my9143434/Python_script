@@ -35,8 +35,7 @@ for network_name in network_names_list:
 		print("error")
 
 	print(current_result)
-	# result = result + current_result
+	result = result + current_result
 
-# print(result)
-# send_email("test@gmail.com", "testettetetet", result)
+send_email("testaccount@gmail.com", "testpassword", result)
 
